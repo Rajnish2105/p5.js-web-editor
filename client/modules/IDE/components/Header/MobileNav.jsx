@@ -1,4 +1,4 @@
-import React, { useContext, useMemo, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
@@ -204,30 +204,30 @@ const MobileNav = () => {
   const project = useSelector((state) => state.project);
   const user = useSelector((state) => state.user);
 
-  const { t } = useTranslation();
+  // const { t } = useTranslation();
 
   const editorLink = useSelector(selectSketchPath);
-  const pageName = useWhatPage();
+  const { pageName, title } = useWhatPage();
 
   // TODO: remove the switch and use a props like mobileTitle <Nav layout=“dashboard” mobileTitle={t(‘Login’)} />
-  function resolveTitle() {
-    switch (pageName) {
-      case 'login':
-        return t('LoginView.Login');
-      case 'signup':
-        return t('LoginView.SignUp');
-      case 'account':
-        return t('AccountView.Settings');
-      case 'examples':
-        return t('Nav.File.Examples');
-      case 'myStuff':
-        return 'My Stuff';
-      default:
-        return project.name;
-    }
-  }
+  // function resolveTitle() {
+  //   switch (pageName) {
+  //     case 'login':
+  //       return t('LoginView.Login');
+  //     case 'signup':
+  //       return t('LoginView.SignUp');
+  //     case 'account':
+  //       return t('AccountView.Settings');
+  //     case 'examples':
+  //       return t('Nav.File.Examples');
+  //     case 'myStuff':
+  //       return 'My Stuff';
+  //     default:
+  //       return project.name;
+  //   }
+  // }
 
-  const title = useMemo(resolveTitle, [pageName, project.name]);
+  // const title = useMemo(resolveTitle, [pageName, project.name]);
 
   const Logo = AsteriskIcon;
   return (
