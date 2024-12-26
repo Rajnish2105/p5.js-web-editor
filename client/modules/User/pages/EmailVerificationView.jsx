@@ -6,9 +6,13 @@ import { useTranslation } from 'react-i18next';
 import { verifyEmailConfirmation } from '../actions';
 import RootPage from '../../../components/RootPage';
 import Nav from '../../IDE/components/Header/Nav';
+import { useWhatPage } from '../../IDE/hooks';
 
 const EmailVerificationView = () => {
   const { t } = useTranslation();
+  const pageName = useWhatPage();
+  const pagetitle = String(t(pageName));
+
   const location = useLocation();
   const dispatch = useDispatch();
   const browserHistory = useHistory();
@@ -38,7 +42,7 @@ const EmailVerificationView = () => {
 
   return (
     <RootPage>
-      <Nav layout="dashboard" />
+      <Nav layout="dashboard" mobileTitle={pagetitle} />
       <div className="form-container">
         <Helmet>
           <title>{t('EmailVerificationView.Title')}</title>

@@ -6,12 +6,16 @@ import LoginForm from '../components/LoginForm';
 import SocialAuthButton from '../components/SocialAuthButton';
 import Nav from '../../IDE/components/Header/Nav';
 import RootPage from '../../../components/RootPage';
+import { useWhatPage } from '../../IDE/hooks';
 
 function LoginView() {
   const { t } = useTranslation();
+  const pageName = useWhatPage();
+  const pagetitle = String(t(pageName));
+
   return (
     <RootPage>
-      <Nav layout="dashboard" />
+      <Nav layout="dashboard" mobileTitle={pagetitle} />
       <main className="form-container">
         <Helmet>
           <title>{t('LoginView.Title')}</title>

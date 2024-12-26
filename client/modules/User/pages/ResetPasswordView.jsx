@@ -7,9 +7,13 @@ import { useTranslation } from 'react-i18next';
 import ResetPasswordForm from '../components/ResetPasswordForm';
 import RootPage from '../../../components/RootPage';
 import Nav from '../../IDE/components/Header/Nav';
+import { useWhatPage } from '../../IDE/hooks';
 
 function ResetPasswordView() {
   const { t } = useTranslation();
+  const pageName = useWhatPage();
+  const pagetitle = String(t(pageName));
+
   const resetPasswordInitiate = useSelector(
     (state) => state.user.resetPasswordInitiate
   );
@@ -21,7 +25,7 @@ function ResetPasswordView() {
   });
   return (
     <RootPage>
-      <Nav layout="dashboard" />
+      <Nav layout="dashboard" mobileTitle={pagetitle} />
       <div className={resetPasswordClass}>
         <Helmet>
           <title>{t('ResetPasswordView.Title')}</title>

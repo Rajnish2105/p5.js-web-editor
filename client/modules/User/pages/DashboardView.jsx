@@ -22,10 +22,13 @@ import DashboardTabSwitcherPublic, {
   TabKey
 } from '../components/DashboardTabSwitcher';
 import useIsMobile from '../../IDE/hooks/useIsMobile';
+import { useWhatPage } from '../../IDE/hooks';
 
 const DashboardView = () => {
   const isMobile = useIsMobile();
   const { t } = useTranslation();
+  const pageName = useWhatPage();
+  const pagetitle = String(t(pageName));
 
   const params = useParams();
   const location = useLocation();
@@ -117,7 +120,7 @@ const DashboardView = () => {
 
   return (
     <RootPage fixedHeight="100%">
-      <Nav layout="dashboard" />
+      <Nav layout="dashboard" mobileTitle={pagetitle} />
 
       <main className="dashboard-header">
         <div className="dashboard-header__header">

@@ -8,9 +8,13 @@ import NewPasswordForm from '../components/NewPasswordForm';
 import { validateResetPasswordToken } from '../actions';
 import Nav from '../../IDE/components/Header/Nav';
 import RootPage from '../../../components/RootPage';
+import { useWhatPage } from '../../IDE/hooks';
 
 function NewPasswordView() {
   const { t } = useTranslation();
+  const pageName = useWhatPage();
+  const pagetitle = String(t(pageName));
+
   const params = useParams();
   const resetPasswordToken = params.reset_password_token;
   const resetPasswordInvalid = useSelector(
@@ -30,7 +34,7 @@ function NewPasswordView() {
   });
   return (
     <RootPage>
-      <Nav layout="dashboard" />
+      <Nav layout="dashboard" mobileTitle={pagetitle} />
       <div className={newPasswordClass}>
         <Helmet>
           <title>{t('NewPasswordView.Title')}</title>

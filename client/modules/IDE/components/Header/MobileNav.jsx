@@ -1,10 +1,12 @@
-import React, { useContext, useMemo, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { sortBy } from 'lodash';
 import classNames from 'classnames';
+import PropTypes from 'prop-types';
+
 import { ParentMenuContext } from '../../../../components/Nav/contexts';
 import NavBar from '../../../../components/Nav/NavBar';
 import { useMenuProps } from '../../../../components/Nav/NavDropdownMenu';
@@ -35,6 +37,7 @@ import { setLanguage } from '../../actions/preferences';
 import Overlay from '../../../App/components/Overlay';
 import ProjectName from './ProjectName';
 import CollectionCreate from '../../../User/components/CollectionCreate';
+import { selectRootFile } from '../../selectors/files';
 
 const Nav = styled(NavBar)`
   background: ${prop('MobilePanel.default.background')};
@@ -200,34 +203,36 @@ const LanguageSelect = styled.div`
   }
 `;
 
-const MobileNav = () => {
+const MobileNav = ({ title }) => {
   const project = useSelector((state) => state.project);
   const user = useSelector((state) => state.user);
 
-  const { t } = useTranslation();
+  // console.log('The title: ', title);
+
+  // const { t } = useTranslation();
 
   const editorLink = useSelector(selectSketchPath);
   const pageName = useWhatPage();
 
   // TODO: remove the switch and use a props like mobileTitle <Nav layout=“dashboard” mobileTitle={t(‘Login’)} />
-  function resolveTitle() {
-    switch (pageName) {
-      case 'login':
-        return t('LoginView.Login');
-      case 'signup':
-        return t('LoginView.SignUp');
-      case 'account':
-        return t('AccountView.Settings');
-      case 'examples':
-        return t('Nav.File.Examples');
-      case 'myStuff':
-        return 'My Stuff';
-      default:
-        return project.name;
-    }
-  }
+  // function resolveTitle() {
+  //   switch (pageName) {
+  //     case 'login':
+  //       return t('LoginView.Login');
+  //     case 'signup':
+  //       return t('LoginView.SignUp');
+  //     case 'account':
+  //       return t('AccountView.Settings');
+  //     case 'examples':
+  //       return t('Nav.File.Examples');
+  //     case 'myStuff':
+  //       return 'My Stuff';
+  //     default:
+  //       return project.name;
+  //   }
+  // }
 
-  const title = useMemo(resolveTitle, [pageName, project.name]);
+  // const title = useMemo(resolveTitle, [pageName, project.name]);
 
   const Logo = AsteriskIcon;
   return (
@@ -244,7 +249,7 @@ const MobileNav = () => {
         )}
       </Title>
       {/* check if the user is in login page */}
-      {pageName === 'login' || pageName === 'signup' ? (
+      {pageName === 'LoginView.Login' || pageName === 'LoginView.SignUp' ? (
         // showing the CrossIcon
         <Options>
           <div>
@@ -256,7 +261,7 @@ const MobileNav = () => {
       ) : (
         // Menus for other pages
         <Options>
-          {pageName === 'myStuff' && <StuffMenu />}
+          {pageName === 'My Stuff' && <StuffMenu />}
           {user.authenticated ? (
             <AccountMenu />
           ) : (
@@ -266,7 +271,7 @@ const MobileNav = () => {
               </Link>
             </div>
           )}
-          {pageName === 'home' ? (
+          {pageName === 'home' || pageName === project.name ? (
             <MoreMenu />
           ) : (
             <div>
@@ -279,6 +284,14 @@ const MobileNav = () => {
       )}
     </Nav>
   );
+};
+
+MobileNav.propTypes = {
+  title: PropTypes.string
+};
+
+MobileNav.defaultProps = {
+  title: 'p5.js Web Editor'
 };
 
 const StuffMenu = () => {
@@ -341,9 +354,8 @@ const AccountMenu = () => {
 
 const MoreMenu = () => {
   // TODO: use selectRootFile selector
-  const rootFile = useSelector(
-    (state) => state.files.filter((file) => file.name === 'root')[0]
-  );
+  // DONE
+  const rootFile = useSelector(selectRootFile);
   const language = useSelector((state) => state.preferences.language);
 
   const dispatch = useDispatch();
@@ -367,8 +379,8 @@ const MoreMenu = () => {
       {isLanguageModalVisible && (
         <Overlay
           // TODO: add translations
-          title="Select Language"
-          ariaLabel="Select Language"
+          title={t('selectLanguage', { defaultValue: 'Select Language' })}
+          ariaLabel={t('selectLanguage', { defaultValue: 'Select Language' })}
           closeOverlay={() => setIsLanguageModalVisible(false)}
         >
           <LanguageSelect>
@@ -420,7 +432,8 @@ const MoreMenu = () => {
             {t('Nav.Sketch.AddFolder')}
           </NavMenuItem>
           {/* TODO: Add Translations */}
-          <b>Settings</b>
+          {/* DONE */}
+          <b>{t('settings', { defaultValue: 'Settings' })}</b>
           <NavMenuItem
             onClick={() => {
               dispatch(openPreferences());

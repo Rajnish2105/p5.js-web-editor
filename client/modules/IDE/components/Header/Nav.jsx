@@ -31,11 +31,13 @@ import { CmControllerContext } from '../../pages/IDEView';
 import MobileNav from './MobileNav';
 import useIsMobile from '../../hooks/useIsMobile';
 
-const Nav = ({ layout }) => {
+const Nav = ({ layout, mobileTitle }) => {
   const isMobile = useIsMobile();
 
+  // console.log('The updated mobile title is: ', mobileTitle);
+
   return isMobile ? (
-    <MobileNav />
+    <MobileNav title={mobileTitle} />
   ) : (
     <NavBar>
       <LeftLayout layout={layout} />
@@ -45,11 +47,13 @@ const Nav = ({ layout }) => {
 };
 
 Nav.propTypes = {
-  layout: PropTypes.oneOf(['dashboard', 'project'])
+  layout: PropTypes.oneOf(['dashboard', 'project']),
+  mobileTitle: PropTypes.string
 };
 
 Nav.defaultProps = {
-  layout: 'project'
+  layout: 'project',
+  mobileTitle: 'p5.js Web Editor'
 };
 
 const LeftLayout = (props) => {

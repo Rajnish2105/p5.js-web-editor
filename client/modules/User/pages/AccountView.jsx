@@ -12,6 +12,7 @@ import Nav from '../../IDE/components/Header/Nav';
 import ErrorModal from '../../IDE/components/ErrorModal';
 import Overlay from '../../App/components/Overlay';
 import Toast from '../../IDE/components/Toast';
+import { useWhatPage } from '../../IDE/hooks';
 
 function SocialLoginPanel() {
   const { t } = useTranslation();
@@ -44,6 +45,8 @@ function SocialLoginPanel() {
 
 function AccountView() {
   const { t } = useTranslation();
+  const pageName = useWhatPage();
+  const pagetitle = String(t(pageName));
 
   const location = useLocation();
   const queryParams = parse(location.search);
@@ -59,7 +62,7 @@ function AccountView() {
       </Helmet>
       <Toast />
 
-      <Nav layout="dashboard" />
+      <Nav layout="dashboard" mobileTitle={pagetitle} />
 
       {showError && (
         <Overlay

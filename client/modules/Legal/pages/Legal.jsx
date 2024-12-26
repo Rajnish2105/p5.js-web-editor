@@ -10,6 +10,7 @@ import { remSize } from '../../../theme';
 import Loader from '../../App/components/loader';
 import Nav from '../../IDE/components/Header/Nav';
 import PolicyContainer from '../components/PolicyContainer';
+import { useWhatPage } from '../../IDE/hooks';
 
 const StyledTabList = styled.nav`
   display: flex;
@@ -24,6 +25,8 @@ const StyledTabList = styled.nav`
 
 function Legal({ policyFile, title }) {
   const { t } = useTranslation();
+  const pageName = useWhatPage();
+  const pagetitle = String(t(pageName));
   const [isLoading, setIsLoading] = useState(true);
   const [policy, setPolicy] = useState('');
 
@@ -40,7 +43,7 @@ function Legal({ policyFile, title }) {
       <Helmet>
         <title>p5.js Web Editor | {title}</title>
       </Helmet>
-      <Nav layout="dashboard" />
+      <Nav layout="dashboard" mobileTitle={pagetitle} />
       <StyledTabList className="dashboard-header__switcher">
         <ul className="dashboard-header__tabs">
           <RouterTab to="/privacy-policy">{t('Legal.PrivacyPolicy')}</RouterTab>
