@@ -7,7 +7,6 @@ import { connect } from 'react-redux';
 import * as ProjectActions from '../actions/project';
 import * as IdeActions from '../actions/ide';
 import TableDropdown from '../../../components/Dropdown/TableDropdown';
-import MenuItem from '../../../components/Dropdown/MenuItem';
 import dates from '../../../utils/formatDate';
 import getConfig from '../../../utils/getConfig';
 
@@ -100,32 +99,43 @@ const SketchListRowBase = ({
     </>
   );
 
+  const items = [
+    {
+      name: t('SketchList.DropdownRename'),
+      onClick: openRename,
+      hideIf: !userIsOwner
+    },
+    {
+      name: t('SketchList.DropdownDownload'),
+      onClick: handleSketchDownload
+    },
+    {
+      name: t('SketchList.DropdownDuplicate'),
+      onClick: handleSketchDuplicate,
+      hideIf: !user.authenticated
+    },
+    {
+      name: t('SketchList.DropdownAddToCollection'),
+      onClick: onAddToCollection,
+      hideIf: !user.authenticated
+    },
+    {
+      name: t('SketchList.DropdownDelete'),
+      onClick: handleSketchDelete,
+      hideIf: !userIsOwner
+    }
+  ];
+
   return (
     <tr className="sketches-table__row">
       <th scope="row">{name}</th>
       <td>{formatDateCell(sketch.createdAt, mobile)}</td>
       <td>{formatDateCell(sketch.updatedAt, mobile)}</td>
       <td className="sketch-list__dropdown-column">
-        <TableDropdown aria-label={t('SketchList.ToggleLabelARIA')}>
-          <MenuItem hideIf={!userIsOwner} onClick={openRename}>
-            {t('SketchList.DropdownRename')}
-          </MenuItem>
-          <MenuItem onClick={handleSketchDownload}>
-            {t('SketchList.DropdownDownload')}
-          </MenuItem>
-          <MenuItem
-            hideIf={!user.authenticated}
-            onClick={handleSketchDuplicate}
-          >
-            {t('SketchList.DropdownDuplicate')}
-          </MenuItem>
-          <MenuItem hideIf={!user.authenticated} onClick={onAddToCollection}>
-            {t('SketchList.DropdownAddToCollection')}
-          </MenuItem>
-          <MenuItem hideIf={!userIsOwner} onClick={handleSketchDelete}>
-            {t('SketchList.DropdownDelete')}
-          </MenuItem>
-        </TableDropdown>
+        <TableDropdown
+          items={items}
+          aria-label={t('SketchList.ToggleLabelARIA')}
+        />
       </td>
     </tr>
   );

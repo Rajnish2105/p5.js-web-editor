@@ -5,7 +5,6 @@ import { Link } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import { withTranslation } from 'react-i18next';
 import styled from 'styled-components';
-import MenuItem from '../../../../components/Dropdown/MenuItem';
 import TableDropdown from '../../../../components/Dropdown/TableDropdown';
 import * as ProjectActions from '../../actions/project';
 import * as CollectionsActions from '../../actions/collections';
@@ -157,20 +156,28 @@ const CollectionListRowBase = (props) => {
   const renderActions = () => {
     const userIsOwner = props.user.username === props.username;
 
+    const items = [
+      {
+        name: props.t('CollectionListRow.AddSketch'),
+        onClick: handleAddSketches
+      },
+      {
+        name: props.t('CollectionListRow.Delete'),
+        hideIf: !userIsOwner,
+        onClick: handleCollectionDelete
+      },
+      {
+        name: props.t('CollectionListRow.Rename'),
+        hideIf: !userIsOwner,
+        onClick: handleRenameOpen
+      }
+    ];
+
     return (
       <TableDropdown
+        items={items}
         aria-label={props.t('CollectionListRow.ToggleCollectionOptionsARIA')}
-      >
-        <MenuItem onClick={handleAddSketches}>
-          {props.t('CollectionListRow.AddSketch')}
-        </MenuItem>
-        <MenuItem hideIf={!userIsOwner} onClick={handleCollectionDelete}>
-          {props.t('CollectionListRow.Delete')}
-        </MenuItem>
-        <MenuItem hideIf={!userIsOwner} onClick={handleRenameOpen}>
-          {props.t('CollectionListRow.Rename')}
-        </MenuItem>
-      </TableDropdown>
+      />
     );
   };
 

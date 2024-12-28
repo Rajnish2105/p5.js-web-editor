@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import prettyBytes from 'pretty-bytes';
-import MenuItem from '../../../components/Dropdown/MenuItem';
 import TableDropdown from '../../../components/Dropdown/TableDropdown';
 import { deleteAssetRequest } from '../actions/assets';
 
@@ -19,13 +18,16 @@ const AssetMenu = ({ item: asset }) => {
     }
   };
 
+  const items = [
+    { name: t('AssetList.Delete'), onClick: handleAssetDelete },
+    { name: t('AssetList.OpenNewTab'), href: asset.url, target: '_blank' }
+  ];
+
   return (
-    <TableDropdown aria-label={t('AssetList.ToggleOpenCloseARIA')}>
-      <MenuItem onClick={handleAssetDelete}>{t('AssetList.Delete')}</MenuItem>
-      <MenuItem href={asset.url} target="_blank">
-        {t('AssetList.OpenNewTab')}
-      </MenuItem>
-    </TableDropdown>
+    <TableDropdown
+      items={items}
+      aria-label={t('AssetList.ToggleOpenCloseARIA')}
+    />
   );
 };
 
